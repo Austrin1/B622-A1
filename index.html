@@ -1,789 +1,147 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>B622-A1.26 | ADNSU Sənaye Mühəndisliyi Portalı</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tezlikle Sizlerle | By: Mehemmed</title>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <!-- Canvas Confetti JS -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <!-- FontAwesome İkonları -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #090a0f;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            color: #ffffff;
+        }
 
-  <style>
-    :root {
-      --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #eff6ff 100%);
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --secondary: #4f46e5;
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --card-border: rgba(226, 232, 240, 0.9);
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --accent-glow: rgba(37, 99, 235, 0.15);
-      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-      --modal-bg: rgba(255, 255, 255, 0.95);
-    }
+        /* Arka Plan Glow/Işık Efektleri */
+        .bg-glow-1 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.35) 0%, rgba(0, 0, 0, 0) 70%);
+            top: 15%;
+            left: 20%;
+            filter: blur(50px);
+            animation: float 8s ease-in-out infinite alternate;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      scroll-behavior: smooth;
-    }
+        .bg-glow-2 {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
+            bottom: 15%;
+            right: 20%;
+            filter: blur(60px);
+            animation: float 10s ease-in-out infinite alternate-reverse;
+        }
 
-    body {
-      background: var(--bg-gradient);
-      background-attachment: fixed;
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+        /* Glassmorphism Kart */
+        .card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 60px 50px;
+            text-align: center;
+            max-width: 650px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
 
-    /* Header & Nav */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--card-border);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-    }
+        /* Rozet / Badge */
+        .badge {
+            display: inline-block;
+            padding: 8px 18px;
+            background: rgba(168, 85, 247, 0.12);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #c084fc;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+        }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
+        /* Ana Başlık */
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #ffffff 30%, #a855f7 70%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+            text-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+        }
 
-    .brand-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: bold;
-      font-size: 1.1rem;
-      box-shadow: 0 4px 12px var(--accent-glow);
-    }
+        /* Çizgi Detayı */
+        .line {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #a855f7, #3b82f6);
+            margin: 0 auto 30px;
+            border-radius: 2px;
+        }
 
-    nav {
-      display: flex;
-      gap: 1.5rem;
-    }
+        /* İmza / Yazar Kısmı */
+        .author {
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            color: #94a3b8;
+        }
 
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: color 0.2s;
-    }
+        .author span {
+            font-weight: 600;
+            color: #ffffff;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    nav a:hover {
-      color: var(--primary);
-    }
+        /* Hareket Animasyonu */
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 40px); }
+        }
 
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      padding: 3.5rem 1rem 2rem 1rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .badge-univ {
-      display: inline-block;
-      padding: 0.4rem 1rem;
-      background: rgba(37, 99, 235, 0.08);
-      border: 1px solid rgba(37, 99, 235, 0.2);
-      color: var(--primary);
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      letter-spacing: 0.5px;
-    }
-
-    .hero h1 {
-      font-size: 2.8rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-
-    /* Doğum Günü Banner */
-    .celebration-banner {
-      display: none;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
-      padding: 1.2rem 2rem;
-      border-radius: 16px;
-      text-align: center;
-      margin: 1rem auto 2rem auto;
-      max-width: 900px;
-      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-      animation: pulse 2s infinite alternate;
-    }
-
-    @keyframes pulse {
-      from { transform: scale(0.99); }
-      to { transform: scale(1.01); }
-    }
-
-    .demo-btn {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 1rem;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-    }
-
-    .demo-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
-    }
-
-    /* Axtarış və Filtr */
-    .controls-container {
-      max-width: 1100px;
-      margin: 1.5rem auto;
-      padding: 0 1.5rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-
-    .search-box {
-      flex: 1;
-      min-width: 280px;
-      position: relative;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 0.8rem 1rem 0.8rem 2.8rem;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
-      background: white;
-      color: var(--text-main);
-      font-size: 0.95rem;
-      box-shadow: var(--shadow);
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .search-box input:focus {
-      border-color: var(--primary);
-    }
-
-    .search-box i {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-    }
-
-    .filter-select {
-      padding: 0.8rem 1.2rem;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
-      background: white;
-      color: var(--text-main);
-      font-weight: 600;
-      font-size: 0.95rem;
-      box-shadow: var(--shadow);
-      outline: none;
-      cursor: pointer;
-    }
-
-    /* Şəbəkə (Grid) */
-    .members-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1.5rem;
-      max-width: 1100px;
-      margin: 0 auto 4rem auto;
-      padding: 0 1.5rem;
-      width: 100%;
-    }
-
-    /* Üvə Kartı */
-    .member-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 1.5rem;
-      text-align: center;
-      box-shadow: var(--shadow);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-    }
-
-    .member-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 15px 30px rgba(37, 99, 235, 0.12);
-      border-color: rgba(37, 99, 235, 0.3);
-    }
-
-    .avatar-wrapper {
-      position: relative;
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 1rem auto;
-    }
-
-    .avatar-svg {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid white;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      background: #e2e8f0;
-    }
-
-    .bday-badge {
-      position: absolute;
-      bottom: -2px;
-      right: -2px;
-      background: #ef4444;
-      color: white;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      border: 2px solid white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
-
-    .member-card h3 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 0.3rem;
-    }
-
-    .member-role {
-      color: var(--primary);
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.8rem;
-    }
-
-    .member-bday-text {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      background: rgba(226, 232, 240, 0.6);
-      padding: 0.3rem 0.6rem;
-      border-radius: 12px;
-      display: inline-block;
-    }
-
-    /* Modal (Ətraflı Məlumat) */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(15, 23, 42, 0.4);
-      backdrop-filter: blur(8px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      padding: 1rem;
-    }
-
-    .modal-card {
-      background: var(--modal-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      max-width: 500px;
-      width: 100%;
-      padding: 2rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      position: relative;
-      animation: modalUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes modalUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 1.2rem;
-      right: 1.2rem;
-      background: #f1f5f9;
-      border: none;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      transition: background 0.2s;
-    }
-
-    .close-btn:hover {
-      background: #e2e8f0;
-      color: var(--text-main);
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .modal-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 3px solid var(--primary);
-    }
-
-    .modal-info h2 {
-      font-size: 1.4rem;
-      color: var(--text-main);
-    }
-
-    .modal-info p {
-      color: var(--primary);
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .detail-item {
-      background: #f8fafc;
-      padding: 0.8rem;
-      border-radius: 12px;
-      border: 1px solid #e2e8f0;
-    }
-
-    .detail-item span {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 0.2rem;
-    }
-
-    .detail-item strong {
-      font-size: 0.95rem;
-      color: var(--text-main);
-    }
-
-    .skill-bar {
-      margin-bottom: 0.8rem;
-    }
-
-    .skill-info {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      margin-bottom: 0.3rem;
-      color: var(--text-muted);
-    }
-
-    .bar-outer {
-      height: 8px;
-      background: #e2e8f0;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .bar-inner {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 4px;
-    }
-
-    /* Hakkımızda / Bölmələr */
-    .section-title {
-      text-align: center;
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 2rem;
-      color: var(--text-main);
-    }
-
-    .about-container {
-      max-width: 1100px;
-      margin: 2rem auto 4rem auto;
-      padding: 0 1.5rem;
-    }
-
-    .about-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 2.5rem;
-      box-shadow: var(--shadow);
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 1.5rem;
-    }
-
-    .about-item h4 {
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-    }
-
-    .about-item p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    /* Footer */
-    footer {
-      margin-top: auto;
-      background: rgba(255, 255, 255, 0.9);
-      border-top: 1px solid var(--card-border);
-      padding: 2rem;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 600px) {
-      .hero h1 { font-size: 2rem; }
-      .detail-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+        @media (max-width: 600px) {
+            .card { padding: 40px 25px; }
+            h1 { font-size: 2.2rem; letter-spacing: 3px; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Naviqasiya -->
-  <header>
-    <div class="brand">
-      <div class="brand-logo">B622</div>
-      <span>ADNSU Portal</span>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <div class="card">
+        <div class="badge">✦ Yakında ✦</div>
+        <h1>TEZLİKLE SİZLERLE</h1>
+        <div class="line"></div>
+        <p class="author">By: <span>Mehemmed</span></p>
     </div>
-    <nav>
-      <a href="#members"><i class="fa-solid fa-users"></i> Tələbələr</a>
-      <a href="#about"><i class="fa-solid fa-circle-info"></i> Qrup Haqında</a>
-    </nav>
-  </header>
 
-  <!-- Hero Bölməsi -->
-  <div class="hero">
-    <span class="badge-univ"><i class="fa-solid fa-graduation-cap"></i> Azərbaycan Dövlət Neft və Sənaye Universiteti</span>
-    <h1>Qrup B622-A1.26</h1>
-    <p>Sənaye Mühəndisliyi İxtisası - Akademik Tələbə Portalı və Rəqəmsal Məlumat Şəbəkəsi</p>
-    
-    <button class="demo-btn" onclick="triggerBirthdayDemo()">
-      <i class="fa-solid fa-cake-candles"></i> Doğum Günü Efektini Sına 🎂
-    </button>
-  </div>
-
-  <!-- Avtomatik Doğum Günü Banneri -->
-  <div id="celebration-banner" class="celebration-banner"></div>
-
-  <!-- Axtarış və Filtr -->
-  <div class="controls-container" id="members">
-    <div class="search-box">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="searchInput" placeholder="Tələbə adı və ya bacarıq axtarın..." oninput="filterMembers()">
-    </div>
-    <select class="filter-select" id="roleFilter" onchange="filterMembers()">
-      <option value="ALL">Bütün Rollar</option>
-      <option value="Təşkilatçı">Qrup Nümayəndələri</option>
-      <option value="Mühəndislik">Mühəndislik</option>
-      <option value="Dizayn">Dizayn / Analiz</option>
-      <option value="Tələbə">Tələbələr</option>
-    </select>
-  </div>
-
-  <!-- 20 Kişilik Tələbə Şəbəkəsi -->
-  <div class="members-grid" id="membersGrid"></div>
-
-  <!-- Hakkımızda Bölməsi -->
-  <div class="about-container" id="about">
-    <h2 class="section-title">Akademik Qrupumuz Haqqında</h2>
-    <div class="about-card">
-      <p style="color: var(--text-muted); line-height: 1.7; font-size: 1.05rem;">
-        B622-A1.26 akademik qrupu ADNSU Sənaye Mühəndisliyi fakültəsində təhsil alan gələcəyin mühəndisləri, sistem analitikləri və rəqəmsal liderlərindən ibarətdir. Portalımız qrup daxili kommunikasiya, doğum günlərinin izlənməsi və akademik layihələrin koordinasiyası üçün nəzərdə tutulub.
-      </p>
-      <div class="about-grid">
-        <div class="about-item">
-          <h4><i class="fa-solid fa-bullseye"></i> Missiyamız</h4>
-          <p>Mühəndislik prinsiplərini tətbiq edərək komanda işini, yenilikçi düşüncəni və texnoloji bacarıqları inkişaf etdirmək.</p>
-        </div>
-        <div class="about-item">
-          <h4><i class="fa-solid fa-lightbulb"></i> Vizyonumuz</h4>
-          <p>Sənaye proseslərinin optimallaşdırılması və rəqəmsallaşdırılmasında aparıcı mütəxəssislərə çevrilmək.</p>
-        </div>
-        <div class="about-item">
-          <h4><i class="fa-solid fa-award"></i> Dəyərlərimiz</h4>
-          <p>Qarşılıqlı hörmət, akademik dürüstlük, daimi öyrənmə və möhkəm qrup həmrəyliyi.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal pəncərə (Ətraflı Məlumat) -->
-  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-    <div class="modal-card" onclick="event.stopPropagation()">
-      <button class="close-btn" onclick="closeModalDirect()"><i class="fa-solid fa-xmark"></i></button>
-      <div class="modal-header">
-        <img src="" id="modalImg" class="modal-avatar" alt="Avatar">
-        <div class="modal-info">
-          <h2 id="modalName">Tələbə Adı</h2>
-          <p id="modalRole">Rol</p>
-        </div>
-      </div>
-
-      <div class="detail-grid">
-        <div class="detail-item">
-          <span>Doğum Tarixi</span>
-          <strong id="modalBday">-</strong>
-        </div>
-        <div class="detail-item">
-          <span>Bürcü</span>
-          <strong id="modalZodiac">-</strong>
-        </div>
-        <div class="detail-item">
-          <span>Qrup İçi Rol</span>
-          <strong id="modalGroupRole">-</strong>
-        </div>
-        <div class="detail-item">
-          <span>Təhsil İli</span>
-          <strong>2026 / Aktiv</strong>
-        </div>
-      </div>
-
-      <h4 style="margin-bottom: 0.8rem; color: var(--text-main);">Akademik Meyllər & Bacarıqlar</h4>
-      <div id="modalSkills"></div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 B622-A1.26 Qrup Portalı | Azərbaycan Dövlət Neft və Sənaye Universiteti</p>
-  </footer>
-
-  <script>
-    // Dinamik SVG Avatar Generasiya Funksiyası (Bəyaz / Mavi Mövzuya Uyğun)
-    function generateAvatarSVG(initials, bgHex = "2563eb", fgHex = "ffffff") {
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-        <rect width="100" height="100" rx="50" fill="#${bgHex}"/>
-        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#${fgHex}" font-family="Segoe UI, sans-serif" font-size="38" font-weight="bold">${initials}</text>
-      </svg>`;
-      return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-    }
-
-    // 20 Tələbə üçün Şablon Verilənlər Baza
-    const membersData = [
-      { id: 1, name: "Tələbə 1", role: "Qrup Nümayəndəsi", category: "Təşkilatçı", bday: "10-19", year: 2005, skills: [{name: "Komanda İdarəetməsi", pct: 95}, {name: "Sənaye Mühəndisliyi", pct: 88}] },
-      { id: 2, name: "Tələbə 2", role: "Nümayəndə Müavini", category: "Təşkilatçı", bday: "03-15", year: 2005, skills: [{name: "Analitik Təhlil", pct: 90}, {name: "Python", pct: 82}] },
-      { id: 3, name: "Tələbə 3", role: "Proses Mühəndisi", category: "Mühəndislik", bday: "05-22", year: 2004, skills: [{name: "AutoCAD", pct: 85}, {name: "Matematik Model", pct: 90}] },
-      { id: 4, name: "Tələbə 4", role: "Keyfiyyət Analitiki", category: "Dizayn", bday: "01-10", year: 2005, skills: [{name: "Statistika", pct: 88}, {name: "Excel / SQL", pct: 85}] },
-      { id: 5, name: "Tələbə 5", role: "Sistem Proqramçısı", category: "Mühəndislik", bday: "11-04", year: 2005, skills: [{name: "C++ / Python", pct: 92}, {name: "Alqoritmlər", pct: 90}] },
-      { id: 6, name: "Tələbə 6", role: "Logistika Analitiki", category: "Mühəndislik", bday: "08-12", year: 2004, skills: [{name: "Təchizat Zənciri", pct: 86}, {name: "Optimallaşdırma", pct: 84}] },
-      { id: 7, name: "Tələbə 7", role: "UI/UX Dizayner", category: "Dizayn", bday: "07-30", year: 2005, skills: [{name: "Figma", pct: 94}, {name: "CSS / HTML", pct: 89}] },
-      { id: 8, name: "Tələbə 8", role: "Layihə Meneceri", category: "Təşkilatçı", bday: "09-18", year: 2005, skills: [{name: "Agile / Scrum", pct: 88}, {name: "Təqdimat", pct: 92}] },
-      { id: 9, name: "Tələbə 9", role: "Məlumat Analitiki", category: "Mühəndislik", bday: "12-05", year: 2005, skills: [{name: "Data Mining", pct: 85}, {name: "PowerBI", pct: 87}] },
-      { id: 10, name: "Tələbə 10", role: "Sənaye Dizayneri", category: "Dizayn", bday: "04-25", year: 2004, skills: [{name: "3D Modeling", pct: 90}, {name: "SolidWorks", pct: 86}] },
-      { id: 11, name: "Tələbə 11", role: "Tələbə", category: "Tələbə", bday: "02-14", year: 2005, skills: [{name: "Fizika", pct: 80}, {name: "Riyaziyyat", pct: 85}] },
-      { id: 12, name: "Tələbə 12", role: "Tələbə", category: "Tələbə", bday: "06-19", year: 2005, skills: [{name: "İngilis Dili", pct: 92}, {name: "Tədqiqat", pct: 83}] },
-      { id: 13, name: "Tələbə 13", role: "Tələbə", category: "Tələbə", bday: "10-02", year: 2004, skills: [{name: "Kiber Təhlükəsizlik", pct: 84}, {name: "Şəbəkələr", pct: 81}] },
-      { id: 14, name: "Tələbə 14", role: "Tələbə", category: "Tələbə", bday: "08-08", year: 2005, skills: [{name: "Ekonomika", pct: 88}, {name: "Maliyyə", pct: 82}] },
-      { id: 15, name: "Tələbə 15", role: "Tələbə", category: "Tələbə", bday: "03-29", year: 2005, skills: [{name: "Mexatronika", pct: 86}, {name: "DevOps", pct: 78}] },
-      { id: 16, name: "Tələbə 16", role: "Tələbə", category: "Tələbə", bday: "11-20", year: 2004, skills: [{name: "Robototexnika", pct: 89}, {name: "Arduino", pct: 91}] },
-      { id: 17, name: "Tələbə 17", role: "Tələbə", category: "Tələbə", bday: "07-07", year: 2005, skills: [{name: "Sistem Analizi", pct: 85}, {name: "Liderlik", pct: 87}] },
-      { id: 18, name: "Tələbə 18", role: "Tələbə", category: "Tələbə", bday: "09-01", year: 2005, skills: [{name: "Yazılımm", pct: 82}, {name: "İnnovasiya", pct: 88}] },
-      { id: 19, name: "Tələbə 19", role: "Tələbə", category: "Tələbə", bday: "05-11", year: 2004, skills: [{name: "Simulyasiya", pct: 87}, {name: "Matlab", pct: 85}] },
-      { id: 20, name: "Tələbə 20", role: "Tələbə", category: "Tələbə", bday: "12-30", year: 2005, skills: [{name: "Strateji Planlama", pct: 90}, {name: "Kommunikasiya", pct: 93}] }
-    ];
-
-    // Bürc Hesablayıcı
-    function getZodiac(mmdd) {
-      const [m, d] = mmdd.split('-').map(Number);
-      if ((m==1 && d>=20) || (m==2 && d<=18)) return "Dolça ♒";
-      if ((m==2 && d>=19) || (m==3 && d<=20)) return "Balıq ♓";
-      if ((m==3 && d>=21) || (m==4 && d<=19)) return "Qoç ♈";
-      if ((m==4 && d>=20) || (m==5 && d<=20)) return "Buğa ♉";
-      if ((m==5 && d>=21) || (m==6 && d<=20)) return "Əkizlər ♊";
-      if ((m==6 && d>=21) || (m==7 && d<=22)) return "Xərçəng ♋";
-      if ((m==7 && d>=23) || (m==8 && d<=22)) return "Şir ♌";
-      if ((m==8 && d>=23) || (m==9 && d<=22)) return "Qız ♍";
-      if ((m==9 && d>=23) || (m==10 && d<=22)) return "Tərəzi ♎";
-      if ((m==10 && d>=23) || (m==11 && d<=21)) return "Əqrəb ♏";
-      if ((m==11 && d>=22) || (m==12 && d<=21)) return "Oxatan ♐";
-      return "Oğlaq ♑";
-    }
-
-    // Bugünü almaq (MM-DD)
-    const today = new Date();
-    const currentMMDD = String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-
-    // Şəbəkəni doldurmaq
-    function renderGrid(data) {
-      const grid = document.getElementById("membersGrid");
-      grid.innerHTML = "";
-
-      data.forEach(m => {
-        const isBdayToday = m.bday === currentMMDD;
-        const initials = `T${m.id}`;
-        const avatarUrl = generateAvatarSVG(initials, isBdayToday ? "ef4444" : "2563eb");
-
-        const card = document.createElement("div");
-        card.className = "member-card";
-        card.onclick = () => openModal(m, avatarUrl);
-
-        card.innerHTML = `
-          <div class="avatar-wrapper">
-            <img src="${avatarUrl}" class="avatar-svg" alt="${m.name}">
-            ${isBdayToday ? '<div class="bday-badge"><i class="fa-solid fa-cake-candles"></i></div>' : ''}
-          </div>
-          <h3>${m.name}</h3>
-          <div class="member-role">${m.role}</div>
-          <div class="member-bday-text">
-            <i class="fa-regular fa-calendar"></i> ${m.bday.replace('-', '.')}
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    // Axtarış və Filtr
-    function filterMembers() {
-      const q = document.getElementById("searchInput").value.toLowerCase();
-      const role = document.getElementById("roleFilter").value;
-
-      const filtered = membersData.filter(m => {
-        const matchesName = m.name.toLowerCase().includes(q) || m.role.toLowerCase().includes(q);
-        const matchesRole = (role === "ALL") || (m.category === role);
-        return matchesName && matchesRole;
-      });
-
-      renderGrid(filtered);
-    }
-
-    // Modal açmaq
-    function openModal(m, avatarUrl) {
-      document.getElementById("modalImg").src = avatarUrl;
-      document.getElementById("modalName").innerText = m.name;
-      document.getElementById("modalRole").innerText = m.role;
-      document.getElementById("modalBday").innerText = `${m.bday.replace('-', '.')}.${m.year}`;
-      document.getElementById("modalZodiac").innerText = getZodiac(m.bday);
-      document.getElementById("modalGroupRole").innerText = m.category;
-
-      const skillsContainer = document.getElementById("modalSkills");
-      skillsContainer.innerHTML = "";
-      m.skills.forEach(s => {
-        skillsContainer.innerHTML += `
-          <div class="skill-bar">
-            <div class="skill-info">
-              <span>${s.name}</span>
-              <span>${s.pct}%</span>
-            </div>
-            <div class="bar-outer">
-              <div class="bar-inner" style="width: ${s.pct}%"></div>
-            </div>
-          </div>
-        `;
-      });
-
-      document.getElementById("modalOverlay").style.display = "flex";
-    }
-
-    function closeModal(e) {
-      if(e.target.id === "modalOverlay") {
-        document.getElementById("modalOverlay").style.display = "none";
-      }
-    }
-
-    function closeModalDirect() {
-      document.getElementById("modalOverlay").style.display = "none";
-    }
-
-    // Doğum Günü Yoxlanışı və Konfeti Efekti
-    function checkBirthdays() {
-      const bdayMembers = membersData.filter(m => m.bday === currentMMDD);
-      const banner = document.getElementById("celebration-banner");
-
-      if (bdayMembers.length > 0) {
-        const names = bdayMembers.map(m => m.name).join(", ");
-        banner.style.display = "block";
-        banner.innerHTML = `🎉 BUGÜN ${names.toUpperCase()} DOĞUM GÜNÜDÜR! TƏBRİK EDİRİK! 🎂🎉`;
-        triggerConfetti();
-      }
-    }
-
-    function triggerConfetti() {
-      if(typeof confetti === 'function') {
-        confetti({
-          particleCount: 120,
-          spread: 80,
-          origin: { y: 0.6 }
-        });
-      }
-    }
-
-    function triggerBirthdayDemo() {
-      const banner = document.getElementById("celebration-banner");
-      banner.style.display = "block";
-      banner.innerHTML = `🎉 BUGÜN TƏLƏBƏ 1-İN DOĞUM GÜNÜDÜR! TƏBRİK EDİRİK! 🎂🎉`;
-      triggerConfetti();
-    }
-
-    // İlk yüklənmə
-    window.onload = () => {
-      renderGrid(membersData);
-      checkBirthdays();
-    };
-  </script>
 </body>
 </html>
