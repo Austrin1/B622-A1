@@ -228,7 +228,7 @@
     /* Şəbəkə (Grid) */
     .members-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1.5rem;
       max-width: 1100px;
       margin: 0 auto 4rem auto;
@@ -292,7 +292,7 @@
     }
 
     .member-card h3 {
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 0.3rem;
@@ -382,7 +382,7 @@
     }
 
     .modal-info h2 {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       color: var(--text-main);
     }
 
@@ -512,7 +512,7 @@
     </div>
     <nav>
       <a href="#members"><i class="fa-solid fa-users"></i> Tələbələr</a>
-      <a href="#about"><i class="fa-solid fa-circle-info"></i> Qrup Haqında</a>
+      <a href="#about"><i class="fa-solid fa-circle-info"></i> Qrup Haqqında</a>
     </nav>
   </header>
 
@@ -545,7 +545,7 @@
     </select>
   </div>
 
-  <!-- 20 Kişilik Tələbə Şəbəkəsi -->
+  <!-- 30 Kişilik Tələbə Şəbəkəsi -->
   <div class="members-grid" id="membersGrid"></div>
 
   <!-- Hakkımızda Bölməsi -->
@@ -614,37 +614,56 @@
   </footer>
 
   <script>
-    // Dinamik SVG Avatar Generasiya Funksiyası (Bəyaz / Mavi Mövzuya Uyğun)
+    // Dinamik SVG Avatar Generasiya Funksiyası
     function generateAvatarSVG(initials, bgHex = "2563eb", fgHex = "ffffff") {
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
         <rect width="100" height="100" rx="50" fill="#${bgHex}"/>
-        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#${fgHex}" font-family="Segoe UI, sans-serif" font-size="38" font-weight="bold">${initials}</text>
+        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#${fgHex}" font-family="Segoe UI, sans-serif" font-size="34" font-weight="bold">${initials}</text>
       </svg>`;
       return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
     }
 
-    // 20 Tələbə üçün Şablon Verilənlər Baza
+    // Ad və Soyaddan Inisiallar Düzəldən Funksiya
+    function getInitials(fullName) {
+      const parts = fullName.trim().split(" ");
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+      }
+      return parts[0].substring(0, 2).toUpperCase();
+    }
+
+    // 30 Tələbə üçün Dəqiq Baza
     const membersData = [
-      { id: 1, name: "Tələbə 1", role: "Qrup Nümayəndəsi", category: "Təşkilatçı", bday: "10-19", year: 2005, skills: [{name: "Komanda İdarəetməsi", pct: 95}, {name: "Sənaye Mühəndisliyi", pct: 88}] },
-      { id: 2, name: "Tələbə 2", role: "Nümayəndə Müavini", category: "Təşkilatçı", bday: "03-15", year: 2005, skills: [{name: "Analitik Təhlil", pct: 90}, {name: "Python", pct: 82}] },
-      { id: 3, name: "Tələbə 3", role: "Proses Mühəndisi", category: "Mühəndislik", bday: "05-22", year: 2004, skills: [{name: "AutoCAD", pct: 85}, {name: "Matematik Model", pct: 90}] },
-      { id: 4, name: "Tələbə 4", role: "Keyfiyyət Analitiki", category: "Dizayn", bday: "01-10", year: 2005, skills: [{name: "Statistika", pct: 88}, {name: "Excel / SQL", pct: 85}] },
-      { id: 5, name: "Tələbə 5", role: "Sistem Proqramçısı", category: "Mühəndislik", bday: "11-04", year: 2005, skills: [{name: "C++ / Python", pct: 92}, {name: "Alqoritmlər", pct: 90}] },
-      { id: 6, name: "Tələbə 6", role: "Logistika Analitiki", category: "Mühəndislik", bday: "08-12", year: 2004, skills: [{name: "Təchizat Zənciri", pct: 86}, {name: "Optimallaşdırma", pct: 84}] },
-      { id: 7, name: "Tələbə 7", role: "UI/UX Dizayner", category: "Dizayn", bday: "07-30", year: 2005, skills: [{name: "Figma", pct: 94}, {name: "CSS / HTML", pct: 89}] },
-      { id: 8, name: "Tələbə 8", role: "Layihə Meneceri", category: "Təşkilatçı", bday: "09-18", year: 2005, skills: [{name: "Agile / Scrum", pct: 88}, {name: "Təqdimat", pct: 92}] },
-      { id: 9, name: "Tələbə 9", role: "Məlumat Analitiki", category: "Mühəndislik", bday: "12-05", year: 2005, skills: [{name: "Data Mining", pct: 85}, {name: "PowerBI", pct: 87}] },
-      { id: 10, name: "Tələbə 10", role: "Sənaye Dizayneri", category: "Dizayn", bday: "04-25", year: 2004, skills: [{name: "3D Modeling", pct: 90}, {name: "SolidWorks", pct: 86}] },
-      { id: 11, name: "Tələbə 11", role: "Tələbə", category: "Tələbə", bday: "02-14", year: 2005, skills: [{name: "Fizika", pct: 80}, {name: "Riyaziyyat", pct: 85}] },
-      { id: 12, name: "Tələbə 12", role: "Tələbə", category: "Tələbə", bday: "06-19", year: 2005, skills: [{name: "İngilis Dili", pct: 92}, {name: "Tədqiqat", pct: 83}] },
-      { id: 13, name: "Tələbə 13", role: "Tələbə", category: "Tələbə", bday: "10-02", year: 2004, skills: [{name: "Kiber Təhlükəsizlik", pct: 84}, {name: "Şəbəkələr", pct: 81}] },
-      { id: 14, name: "Tələbə 14", role: "Tələbə", category: "Tələbə", bday: "08-08", year: 2005, skills: [{name: "Ekonomika", pct: 88}, {name: "Maliyyə", pct: 82}] },
-      { id: 15, name: "Tələbə 15", role: "Tələbə", category: "Tələbə", bday: "03-29", year: 2005, skills: [{name: "Mexatronika", pct: 86}, {name: "DevOps", pct: 78}] },
-      { id: 16, name: "Tələbə 16", role: "Tələbə", category: "Tələbə", bday: "11-20", year: 2004, skills: [{name: "Robototexnika", pct: 89}, {name: "Arduino", pct: 91}] },
-      { id: 17, name: "Tələbə 17", role: "Tələbə", category: "Tələbə", bday: "07-07", year: 2005, skills: [{name: "Sistem Analizi", pct: 85}, {name: "Liderlik", pct: 87}] },
-      { id: 18, name: "Tələbə 18", role: "Tələbə", category: "Tələbə", bday: "09-01", year: 2005, skills: [{name: "Yazılımm", pct: 82}, {name: "İnnovasiya", pct: 88}] },
-      { id: 19, name: "Tələbə 19", role: "Tələbə", category: "Tələbə", bday: "05-11", year: 2004, skills: [{name: "Simulyasiya", pct: 87}, {name: "Matlab", pct: 85}] },
-      { id: 20, name: "Tələbə 20", role: "Tələbə", category: "Tələbə", bday: "12-30", year: 2005, skills: [{name: "Strateji Planlama", pct: 90}, {name: "Kommunikasiya", pct: 93}] }
+      { id: 1, name: "Eldarova Zəhra İbad", role: "Sənaye Mühəndisi", category: "Mühəndislik", bday: "03-10", year: 2009, skills: [{name: "Sənaye Mühəndisliyi", pct: 90}, {name: "Analitik Təhlil", pct: 85}] },
+      { id: 2, name: "Həsənli Nuray Rafiq", role: "Keyfiyyət Analitiki", category: "Dizayn", bday: "02-22", year: 2009, skills: [{name: "Statistika", pct: 88}, {name: "Excel / SQL", pct: 84}] },
+      { id: 3, name: "Qasımov İsmayıl Şamil", role: "Proses Mühəndisi", category: "Mühəndislik", bday: "12-07", year: 2008, skills: [{name: "AutoCAD", pct: 87}, {name: "Matematik Model", pct: 89}] },
+      { id: 4, name: "Mədətov Emil Cavid", role: "Sistem Proqramçısı", category: "Mühəndislik", bday: "11-23", year: 2009, skills: [{name: "C++ / Python", pct: 92}, {name: "Alqoritmlər", pct: 90}] },
+      { id: 5, name: "Söhrablı Sadiq Rövşən", role: "Qrup Nümayəndəsi", category: "Təşkilatçı", bday: "06-08", year: 2009, skills: [{name: "Komanda İdarəetməsi", pct: 95}, {name: "Liderlik", pct: 92}] },
+      { id: 6, name: "Ağasiyev Əli Elnur", role: "Logistika Analitiki", category: "Mühəndislik", bday: "02-27", year: 2009, skills: [{name: "Təchizat Zənciri", pct: 86}, {name: "Optimallaşdırma", pct: 85}] },
+      { id: 7, name: "Kərimov Adəm Rövşən", role: "Mexatronika Mühəndisi", category: "Mühəndislik", bday: "04-22", year: 2009, skills: [{name: "Mexatronika", pct: 88}, {name: "Arduino", pct: 90}] },
+      { id: 8, name: "Məhərrəmov Rahil Qabil", role: "Layihə Meneceri", category: "Təşkilatçı", bday: "06-18", year: 2009, skills: [{name: "Agile / Scrum", pct: 89}, {name: "Təqdimat", pct: 91}] },
+      { id: 9, name: "Eyyublu Leyla Qalib", role: "UI/UX Dizayner", category: "Dizayn", bday: "08-04", year: 2009, skills: [{name: "Figma", pct: 94}, {name: "CSS / HTML", pct: 88}] },
+      { id: 10, name: "Həsənli Fidan Vüsal", role: "Məlumat Analitiki", category: "Dizayn", bday: "02-05", year: 2009, skills: [{name: "Data Mining", pct: 86}, {name: "PowerBI", pct: 88}] },
+      { id: 11, name: "Qafarzadə Rəsul Elbrus", role: "Sənaye Dizayneri", category: "Dizayn", bday: "12-29", year: 2008, skills: [{name: "3D Modeling", pct: 91}, {name: "SolidWorks", pct: 87}] },
+      { id: 12, name: "Qasımzadə Əkbər İntiqam", role: "Nümayəndə Müavini", category: "Təşkilatçı", bday: "01-31", year: 2009, skills: [{name: "Təşkilatçılıq", pct: 90}, {name: "Kommunikasiya", pct: 93}] },
+      { id: 13, name: "Qəfərzadə Cəsur Anar", role: "Tələbə", category: "Tələbə", bday: "04-06", year: 2010, skills: [{name: "Fizika", pct: 82}, {name: "Riyaziyyat", pct: 86}] },
+      { id: 14, name: "Əhmədzadə Mustafa Rövşən", role: "Tələbə", category: "Tələbə", bday: "03-07", year: 2009, skills: [{name: "İngilis Dili", pct: 90}, {name: "Tədqiqat", pct: 84}] },
+      { id: 15, name: "Süleymanova Xədicə Teymur", role: "Tələbə", category: "Tələbə", bday: "10-09", year: 2009, skills: [{name: "Ekonomika", pct: 87}, {name: "Maliyyə", pct: 83}] },
+      { id: 16, name: "Boziyev Anar İslam", role: "Tələbə", category: "Tələbə", bday: "07-18", year: 2009, skills: [{name: "Robototexnika", pct: 88}, {name: "DevOps", pct: 80}] },
+      { id: 17, name: "Mehdizadə Emil Bəhmən", role: "Tələbə", category: "Tələbə", bday: "04-02", year: 2009, skills: [{name: "Kiber Təhlükəsizlik", pct: 85}, {name: "Şəbəkələr", pct: 82}] },
+      { id: 18, name: "Bayramov Müşfiq Ağaverdi", role: "Tələbə", category: "Tələbə", bday: "04-18", year: 2009, skills: [{name: "Sistem Analizi", pct: 86}, {name: "Simulyasiya", pct: 84}] },
+      { id: 19, name: "Xoçberova Ayşa Şamil", role: "Tələbə", category: "Tələbə", bday: "01-09", year: 2009, skills: [{name: "Strateji Planlama", pct: 89}, {name: "Təqdimat", pct: 90}] },
+      { id: 20, name: "Cəfərli Nurvin Müşfiq", role: "Tələbə", category: "Tələbə", bday: "09-24", year: 2009, skills: [{name: "Matlab", pct: 85}, {name: "Python", pct: 83}] },
+      { id: 21, name: "Həsənov Əbülfəz Nəsir", role: "Tələbə", category: "Tələbə", bday: "02-28", year: 2009, skills: [{name: "Yazılım", pct: 84}, {name: "İnnovasiya", pct: 87}] },
+      { id: 22, name: "Nəzərov İsmayıl Sərxan", role: "Tələbə", category: "Tələbə", bday: "05-05", year: 2009, skills: [{name: "Riyaziyyat", pct: 88}, {name: "Statistika", pct: 86}] },
+      { id: 23, name: "Ağayev Məhəmməd Cavad", role: "Mühəndislik Analitiki", category: "Mühəndislik", bday: "09-30", year: 2009, skills: [{name: "Python / C++", pct: 94}, {name: "Əməliyyat Sistemləri", pct: 92}] },
+      { id: 24, name: "İbrahimov Baba Adəm", role: "Tələbə", category: "Tələbə", bday: "08-23", year: 2009, skills: [{name: "Logistika", pct: 83}, {name: "Kommunikasiya", pct: 88}] },
+      { id: 25, name: "Usublu Elcan Zülfüqar", role: "Tələbə", category: "Tələbə", bday: "03-31", year: 2009, skills: [{name: "Mexatronika", pct: 85}, {name: "Fizika", pct: 83}] },
+      { id: 26, name: "Muradov Turan Ruslan", role: "Tələbə", category: "Tələbə", bday: "04-09", year: 2009, skills: [{name: "AutoCAD", pct: 84}, {name: "Dizayn", pct: 82}] },
+      { id: 27, name: "Qocayeva Ləman Cəbrayil", role: "Tələbə", category: "Tələbə", bday: "10-29", year: 2008, skills: [{name: "Keyfiyyətə Nəzarət", pct: 87}, {name: "Tədqiqat", pct: 89}] },
+      { id: 28, name: "Əlizadə Aylin Elmin", role: "Tələbə", category: "Tələbə", bday: "04-20", year: 2009, skills: [{name: "İngilis Dili", pct: 93}, {name: "Maliyyə", pct: 85}] },
+      { id: 29, name: "İmranov Ayxan Seymur", role: "Tələbə", category: "Tələbə", bday: "04-10", year: 2009, skills: [{name: "Alqoritmlər", pct: 86}, {name: "C++", pct: 84}] },
+      { id: 30, name: "Həsənov Əli Rasim", role: "Tələbə", category: "Tələbə", bday: "12-01", year: 2009, skills: [{name: "Sənaye Mühəndisliyi", pct: 88}, {name: "Liderlik", pct: 86}] }
     ];
 
     // Bürc Hesablayıcı
@@ -675,12 +694,14 @@
 
       data.forEach(m => {
         const isBdayToday = m.bday === currentMMDD;
-        const initials = `T${m.id}`;
+        const initials = getInitials(m.name);
         const avatarUrl = generateAvatarSVG(initials, isBdayToday ? "ef4444" : "2563eb");
 
         const card = document.createElement("div");
         card.className = "member-card";
         card.onclick = () => openModal(m, avatarUrl);
+
+        const bdayFormatted = m.bday.split('-').reverse().join('.');
 
         card.innerHTML = `
           <div class="avatar-wrapper">
@@ -690,7 +711,7 @@
           <h3>${m.name}</h3>
           <div class="member-role">${m.role}</div>
           <div class="member-bday-text">
-            <i class="fa-regular fa-calendar"></i> ${m.bday.replace('-', '.')}
+            <i class="fa-regular fa-calendar"></i> ${bdayFormatted}.${m.year}
           </div>
         `;
         grid.appendChild(card);
@@ -713,10 +734,12 @@
 
     // Modal açmaq
     function openModal(m, avatarUrl) {
+      const bdayFormatted = m.bday.split('-').reverse().join('.');
+      
       document.getElementById("modalImg").src = avatarUrl;
       document.getElementById("modalName").innerText = m.name;
       document.getElementById("modalRole").innerText = m.role;
-      document.getElementById("modalBday").innerText = `${m.bday.replace('-', '.')}.${m.year}`;
+      document.getElementById("modalBday").innerText = `${bdayFormatted}.${m.year}`;
       document.getElementById("modalZodiac").innerText = getZodiac(m.bday);
       document.getElementById("modalGroupRole").innerText = m.category;
 
@@ -775,7 +798,7 @@
     function triggerBirthdayDemo() {
       const banner = document.getElementById("celebration-banner");
       banner.style.display = "block";
-      banner.innerHTML = `🎉 BUGÜN TƏLƏBƏ 1-İN DOĞUM GÜNÜDÜR! TƏBRİK EDİRİK! 🎂🎉`;
+      banner.innerHTML = `🎉 BUGÜN ELYAROVA ZƏHRA VƏ AĞAYEV MƏHƏMMƏDİN DOĞUM GÜNÜDÜR! TƏBRİK EDİRİK! 🎂🎉`;
       triggerConfetti();
     }
 
